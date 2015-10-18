@@ -31,7 +31,7 @@ class Users(Base):
     ID = Column(Integer, primary_key=True)
     EMAIL_ID = Column(String(50), nullable=False, index=True)
     PASSWORD = Column(String(50), nullable=False)
-    COLLEGE_ID = Column(Integer, ForeignKey('College.COLLEGE_ID'))
+    COLLEGE_ID = Column(Integer, ForeignKey('college.COLLEGE_ID'))
     COLLEGE = relationship("College", backref=backref("Users", uselist=False))
     FIRST_NAME = Column(String(50))
     MIDDLE_NAME = Column(String(50))
@@ -63,7 +63,7 @@ class UserSessions(Base):
     # __table_args__ = {'schema':CommonUtils.dbschema}
 
     ID = Column(Integer, primary_key=True)
-    USER_ID = Column(Integer, ForeignKey('Users.ID'))
+    USER_ID = Column(Integer, ForeignKey('users.ID'))
     USERS = relationship("Users", backref=backref("UserSessions", uselist=False))
     SESSION_ID = Column(String(30), nullable=False)
     IS_ACTIVE = Column(Integer, default=0)
@@ -85,7 +85,7 @@ class Rating(Base):
 
     ID = Column(Integer, primary_key=True)
     RATING_ON = Column(Integer)
-    VALUE = Column(Integer(10,2))
+    VALUE = Column(Integer)
     COUNT = Column(Integer)
 
     @validates('RATING_ON')
@@ -100,7 +100,7 @@ class Modules(Base):
     NAME = Column(String(20), nullable=False, index=True)
     DESCRIPTION = Column(String(200))
     PARENT_ID = Column(Integer)
-    COLLEGE_ID = Column(Integer, ForeignKey('College.COLLEGE_ID'))
+    COLLEGE_ID = Column(Integer, ForeignKey('college.COLLEGE_ID'))
     # many to one relattion COLLEGE = relationship("College", backref=backref("modules", uselist=False))
     ATTENDED_USER_COUNT = Column(Integer)
     IMAGE = Column(String(200))
@@ -120,7 +120,7 @@ class TutorialVideo(Base):
     ID = Column(Integer, primary_key=True)
     NAME = Column(String(20), nullable=False, index=True)
     DESCRIPTION = Column(String(200))
-    SUBTOPIC_ID = Column(Integer,ForeignKey('tutorail_subtopic.ID'))
+    SUBTOPIC_ID = Column(Integer,ForeignKey('tutorial_subtopic.ID'))
     #many to many relationship to be added here
     SEQUENCE_NO = Column(Integer)
     REFERENCE_LINK = Column(String(100))
@@ -129,14 +129,14 @@ class TutorialQbank(Base):
     __tablename__ = 'tutorial_qbank'
 
     ID = Column(Integer, primary_key=True)
-    SUBTOPIC_ID = Column(Integer,ForeignKey('tutorail_subtopic.ID'))
+    SUBTOPIC_ID = Column(Integer,ForeignKey('tutorial_subtopic.ID'))
     #many to many relationship to be added here
     DESCRIPTION = Column(String(200))
     QUESTION_BANK_TYPE = Column(Integer)
     CORRECT_ANSWERS = Column(String(1000))
     WRONG_ANSWERS = Column(String(1000))
-    MAX = Column(Integer(10,2))
-    AVERAGE_SOLVE_TIME = Column(Integer(10,2))
+    MAX = Column(Integer)
+    AVERAGE_SOLVE_TIME = Column(Integer)
     TAG = Column(String(50))
     APPROACH = Column(String(200))
     HINT = Column(String(200))
@@ -158,7 +158,7 @@ class UserBookmark(Base):
     __tablename__ = "user_bookmark"
 
     ID = Column(Integer, primary_key=True)
-    USER_ID = Column(Integer, ForeignKey('Users.ID'))
+    USER_ID = Column(Integer, ForeignKey('users.ID'))
     #add many to one relation ship here
     BOOKMARK_ON = Column(Integer)
     BOOKMARK_ID = Column(Integer)
@@ -172,7 +172,7 @@ class UserProgress(Base):
     __tablename__ = "user_progress"
 
     ID = Column(Integer, primary_key=True)
-    USER_ID = Column(Integer, ForeignKey('Users.ID'))
+    USER_ID = Column(Integer, ForeignKey('users.ID'))
     #add many to one relation ship here
     QUESTION_BANK_ID = Column(Integer)
     VIDEO_ID = Column(Integer)
@@ -183,10 +183,10 @@ class UserScore(Base):
     __tablename__ = "user_score"
 
     ID = Column(Integer, primary_key=True)
-    USER_ID = Column(Integer, ForeignKey('Users.ID'))
+    USER_ID = Column(Integer, ForeignKey('users.ID'))
     #add many to one relation ship here
-    SOLVE_TIME = Column(Integer(10,2))
-    SCORE = Column(Integer(10,2))
+    SOLVE_TIME = Column(Integer)
+    SCORE = Column(Integer)
     SUGGESTIONS = Column(String(200))
 
 engine = create_engine(CommonUtils.dbtype + ':///' + CommonUtils.dbname, echo=True)
